@@ -1,0 +1,59 @@
+<template>
+    <lightning-card title="PDF Viewer">
+
+        <div class="slds-grid slds-grid_vertical">
+            <div class="slds-col slds-align-middle"> 
+                <input type="file" accept=".pdf" onchange={handleFileChange} />
+            </div>
+          
+            <div class="slds-col slds-p-around_large slds-grid slds-grid_align-space" >
+                <lightning-button variant="Neutral" label="PDF To Canvas" title="PDF To Canvas" onclick={PdfToCanvasHandler}></lightning-button>
+                <lightning-button variant="brand" label="PDF To Text" title="PDF To Text" onclick={PdfToTextHandler}></lightning-button>
+                <lightning-button variant="brand-outline" label="PDF To HTML" title="PDF To HTML" onclick={PdfToHtmlHandler}></lightning-button>
+                <lightning-button variant="destructive" label="PDF to Image"  title="PDF To Image" onclick={PdfToImageHandler}></lightning-button>
+            </div>
+            
+            <div class="slds-col slds-align-middle">
+                <template if:true={PdfToCanvas} for:each={pages} for:item="page">
+                    <div key={page.id} class="page-container">
+                        <canvas data-page-id={page.id} class="pdf-canvas"></canvas>
+                    </div>
+                </template>
+
+                <template if:true={PdfToImage}>
+                    <div class="canvas-container">
+                        <template for:each={images} for:item="image" for:index="index">
+                            <img key={image} src={image} alt="PDF Page Image" style="margin-top: 20px; max-width: 500px;"/>
+                        </template>
+                    </div>
+                </template>
+                <template if:true={PdfToText}>
+                    <div class="text-output">
+                        <h2>Extracted Text:</h2>
+                        <pre style="white-space:pre-line;">{extractedTextPreview}</pre>
+                    </div>
+                </template>
+                <template if:true={PdfToHtml}>
+                     <div class="html-output">
+                        <h2>Extracted HTML Content:</h2>
+                        <div class="html-container"></div>
+                    </div>
+                </template>
+                 <template if:true={isLoading}>  
+                    <div class="loader">Loading...</div>
+                </template>
+       
+
+            </div>
+        </div>
+        
+    
+        
+
+
+       
+        
+
+       
+    </lightning-card>
+</template>
